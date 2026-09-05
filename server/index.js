@@ -8,7 +8,6 @@ import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { seedDatabase } from "./seed.js";
 
 const app = express();
@@ -23,15 +22,19 @@ const connect = async () => {
     if (mongoUri && mongoUri !== "your_uri" && (mongoUri.startsWith("mongodb://") || mongoUri.startsWith("mongodb+srv://"))) {
       await mongoose.connect(mongoUri);
       console.log("Connected to MongoDB via process.env.MONGO.");
-    } else {
+      isConnected = true;
+    } else if (!process.env.VERCEL) {
       console.log("No external MongoDB URI specified in .env. Starting embedded MongoDB...");
+      const { MongoMemoryServer } = await import("mongodb-memory-server");
       const mongoServer = await MongoMemoryServer.create();
       const uri = mongoServer.getUri();
       await mongoose.connect(uri);
       console.log("Connected to embedded MongoDB at:", uri);
+      isConnected = true;
+      await seedDatabase();
+    } else {
+      console.warn("No MONGO environment variable found on Vercel deployment.");
     }
-    isConnected = true;
-    await seedDatabase();
   } catch (error) {
     console.error("MongoDB connection error:", error);
     throw error;
