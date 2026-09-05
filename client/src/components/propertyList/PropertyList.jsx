@@ -1,37 +1,96 @@
 import useFetch from "../../hooks/useFetch";
+import { useNavigate } from "react-router-dom";
 import "./propertyList.css";
 
 const PropertyList = () => {
-  const { data, loading, error } = useFetch("/hotels/countByType");
+  const { data, loading } = useFetch("/hotels/countByType");
+  const navigate = useNavigate();
 
-  const images = [
-    "https://cf.bstatic.com/xdata/images/xphoto/square300/57584488.webp?k=bf724e4e9b9b75480bbe7fc675460a089ba6414fe4693b83ea3fdd8e938832a6&o=",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-apartments_300/9f60235dc09a3ac3f0a93adbc901c61ecd1ce72e.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/bg_resorts/6f87c6143fbd51a0bb5d15ca3b9cf84211ab0884.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-villas_300/dd0d7f8202676306a661aa4f0cf1ffab31286211.jpg",
-    "https://cf.bstatic.com/static/img/theme-index/carousel_320x240/card-image-chalet_300/8ee014fcc493cb3334e25893a1dee8c6d36ed0ba.jpg",
+  const propertyTypes = [
+    {
+      name: "Hotels",
+      type: "hotel",
+      image:
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      name: "Apartments",
+      type: "apartment",
+      image:
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      name: "Resorts",
+      type: "resort",
+      image:
+        "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      name: "Villas",
+      type: "villa",
+      image:
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      name: "Cabins",
+      type: "cabin",
+      image:
+        "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=600&q=80",
+    },
   ];
+
+  const handleTypeClick = (type) => {
+    navigate("/hotels", {
+      state: {
+        destination: "",
+        dates: [
+          {
+            startDate: new Date(),
+            endDate: new Date(new Date().setDate(new Date().getDate() + 3)),
+            key: "selection",
+          },
+        ],
+        options: { adult: 2, children: 0, room: 1 },
+      },
+    });
+  };
+
   return (
     <div className="pList">
       {loading ? (
-        "loading"
+        <div className="pListSkeletonGrid">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <div className="pListSkeleton" key={n}></div>
+          ))}
+        </div>
       ) : (
-        <>
+        <div className="pListGrid">
           {data &&
-            images.map((img,i) => (
-              <div className="pListItem" key={i}>
-                <img
-                  src={img}
-                  alt=""
-                  className="pListImg"
-                />
+            propertyTypes.map((item, i) => (
+              <div
+                className="pListItem"
+                key={item.type}
+                onClick={() => handleTypeClick(item.type)}
+              >
+                <div className="pListImgBox">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="pListImg"
+                  />
+                  <div className="pListOverlay"></div>
+                </div>
                 <div className="pListTitles">
-                  <h1>{data[i]?.type}</h1>
-                  <h2>{data[i]?.count} {data[i]?.type}</h2>
+                  <h3 className="pListType">{item.name}</h3>
+                  <span className="pListCount">
+                    {data[i]?.count !== undefined
+                      ? `${data[i]?.count} ${data[i]?.count === 1 ? "property" : "properties"}`
+                      : "Available"}
+                  </span>
                 </div>
               </div>
             ))}
-        </>
+        </div>
       )}
     </div>
   );

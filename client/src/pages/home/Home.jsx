@@ -9,18 +9,46 @@ import "./home.css";
 
 const Home = () => {
   return (
-    <div>
+    <div className="homePage">
       <Navbar />
-      <Header/>
-      <div className="homeContainer">
-        <Featured/>
-        <h1 className="homeTitle">Browse by property type</h1>
-        <PropertyList/>
-        <h1 className="homeTitle">Homes guests love</h1>
-        <FeaturedProperties/>
-        <MailList/>
-        <Footer/>
-      </div>
+      <Header />
+      <main className="homeContainer">
+        <section className="homeSection">
+          <div className="homeSectionHeader">
+            <span className="sectionTag">ICONIC DESTINATIONS</span>
+            <h2 className="homeTitle">Explore World-Class Cities</h2>
+            <p className="homeSubtitle">
+              Immerse yourself in culture, historic landmarks, and 5-star hospitality.
+            </p>
+          </div>
+          <Featured />
+        </section>
+
+        <section className="homeSection">
+          <div className="homeSectionHeader">
+            <span className="sectionTag">CURATED ARCHITECTURE</span>
+            <h2 className="homeTitle">Browse by Property Style</h2>
+            <p className="homeSubtitle">
+              From ultra-modern penthouses and luxury villas to peaceful rustic cabins.
+            </p>
+          </div>
+          <PropertyList />
+        </section>
+
+        <section className="homeSection">
+          <div className="homeSectionHeader">
+            <span className="sectionTag">HIGHLY RATED STAYS</span>
+            <h2 className="homeTitle">Sanctuaries Guests Adore</h2>
+            <p className="homeSubtitle">
+              Top-rated properties with extraordinary panoramic views, spas, and bespoke amenities.
+            </p>
+          </div>
+          <FeaturedProperties />
+        </section>
+
+        <MailList />
+        <Footer />
+      </main>
     </div>
   );
 };

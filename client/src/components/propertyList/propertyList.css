@@ -1,31 +1,94 @@
-.pList{
+.pList {
   width: 100%;
-  max-width: 1024px;
-  display: flex;
-  justify-content: space-between;
+}
+
+.pListGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 }
 
-.pListItem{
-  flex:1;
-  border-radius: 10px;
-  overflow: hidden;
+.pListItem {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   cursor: pointer;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.pListImg{
+.pListItem:hover {
+  transform: translateY(-5px);
+}
+
+.pListImgBox {
   width: 100%;
-  height: 150px;
+  height: 160px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+}
+
+.pListImg {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.pListTitles>h1{
-  font-size: 18px;
-  color: #444;
-  text-transform: capitalize;
+.pListItem:hover .pListImg {
+  transform: scale(1.08);
 }
 
-.pListTitles>h2{
-  font-size: 14px;
-  font-weight: 300;
+.pListOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(8, 26, 36, 0.4) 100%);
+}
+
+.pListTitles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pListType {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.pListItem:hover .pListType {
+  color: #0284c7;
+}
+
+.pListCount {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pListSkeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.pListSkeleton {
+  height: 160px;
+  background: #e2e8f0;
+  border-radius: 16px;
+}
+
+@media (max-width: 900px) {
+  .pListGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

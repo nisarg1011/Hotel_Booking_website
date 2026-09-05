@@ -1,78 +1,294 @@
-.reserve {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.418);
+.reserveModal {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.rOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(8, 26, 36, 0.75);
+  backdrop-filter: blur(8px);
 }
 
 .rContainer {
-  background-color: white;
-  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
   position: relative;
-}
-
-.rClose {
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-}
-
-.rItem {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  padding: 20px;
-}
-
-.rInfo {
+  z-index: 10;
+  width: 100%;
+  max-width: 620px;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.rCloseBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: none;
+  font-size: 16px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.rCloseBtn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.rHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rBadge {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #0284c7;
 }
 
 .rTitle {
-  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rSub {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.rRoomsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.rItem {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rItemHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rBedIcon {
+  color: #0284c7;
+  font-size: 14px;
+}
+
+.rRoomTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
 }
 
 .rDesc {
-  font-weight: 300;
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.rMetaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
 }
 
 .rMax {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
 }
 
 .rPrice {
-  font-weight: 500;
-}
-
-.rSelectRooms{
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  font-size: 8px;
-  color: gray;
+  align-items: baseline;
+  gap: 2px;
 }
 
-.room{
+.rPrice span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.rPrice small {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.rSelectRooms {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
+}
+
+.rSelectLabel {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.rRoomNumberGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.roomChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.roomChip:hover:not(.disabledChip) {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+.roomChip.selectedChip {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: white;
+}
+
+.roomChip.disabledChip {
+  opacity: 0.4;
+  background: #e2e8f0;
+  cursor: not-allowed;
+}
+
+.roomChip input {
+  display: none;
+}
+
+.rFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+.rSelectedCount {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.rSelectedCount b {
+  font-size: 15px;
+  color: #0f172a;
 }
 
 .rButton {
-  border: none;
-  padding: 10px 20px;
-  background-color: #0071c2;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   color: white;
-  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14.5px;
   cursor: pointer;
-  border-radius: 5px;
-  width: 100%;
-  margin-top: 20px;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.rButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+}
+
+.rButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rSuccessBox {
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.rSuccessIcon {
+  font-size: 48px;
+  color: #10b981;
+}
+
+.rSuccessBox h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rSuccessBox p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
 }

@@ -7,8 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
   faCircleArrowRight,
-  faCircleXmark,
+  faXmark,
   faLocationDot,
+  faStar,
+  faWifi,
+  faWaterLadder,
+  faUtensils,
+  faSpa,
+  faShieldHalved,
+  faCar,
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import useFetch from "../../hooks/useFetch";
@@ -24,7 +31,7 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { data, loading, error } = useFetch(`/hotels/find/${id}`);
+  const { data, loading } = useFetch(`/hotels/find/${id}`);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -32,12 +39,16 @@ const Hotel = () => {
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
+    if (!date1 || !date2) return 1;
     const timeDiff = Math.abs(date2.getTime() - date1.getTime());
     const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
-    return diffDays;
+    return diffDays > 0 ? diffDays : 1;
   }
 
-  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  const days =
+    dates && dates[0]
+      ? dayDifference(dates[0].endDate, dates[0].startDate)
+      : 1;
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -46,13 +57,12 @@ const Hotel = () => {
 
   const handleMove = (direction) => {
     let newSlideNumber;
-
+    const totalPhotos = data.photos?.length || 1;
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
+      newSlideNumber = slideNumber === 0 ? totalPhotos - 1 : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
+      newSlideNumber = slideNumber === totalPhotos - 1 ? 0 : slideNumber + 1;
     }
-
     setSlideNumber(newSlideNumber);
   };
 
@@ -63,90 +73,147 @@ const Hotel = () => {
       navigate("/login");
     }
   };
+
+  const amenities = [
+    { icon: faWifi, label: "Ultra High-Speed WiFi" },
+    { icon: faWaterLadder, label: "Panoramic Pool & Sun Deck" },
+    { icon: faUtensils, label: "Gourmet Breakfast Included" },
+    { icon: faSpa, label: "Luxury Wellness Spa & Sauna" },
+    { icon: faCar, label: "Complimentary Valet Parking" },
+    { icon: faShieldHalved, label: "24/7 VIP Concierge Care" },
+  ];
+
   return (
-    <div>
+    <div className="hotelPage">
       <Navbar />
       <Header type="list" />
+
       {loading ? (
-        "loading"
-      ) : (
+        <div className="hotelLoading">
+          <div className="hotelSkeleton"></div>
+        </div>
+      ) : data ? (
         <div className="hotelContainer">
           {open && (
             <div className="slider">
-              <FontAwesomeIcon
-                icon={faCircleXmark}
-                className="close"
-                onClick={() => setOpen(false)}
-              />
-              <FontAwesomeIcon
-                icon={faCircleArrowLeft}
-                className="arrow"
-                onClick={() => handleMove("l")}
-              />
+              <button className="closeBtn" onClick={() => setOpen(false)}>
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+              <button className="sliderArrow leftArrow" onClick={() => handleMove("l")}>
+                <FontAwesomeIcon icon={faCircleArrowLeft} />
+              </button>
               <div className="sliderWrapper">
                 <img
-                  src={data.photos[slideNumber]}
+                  src={data.photos && data.photos[slideNumber]}
                   alt=""
                   className="sliderImg"
                 />
               </div>
-              <FontAwesomeIcon
-                icon={faCircleArrowRight}
-                className="arrow"
-                onClick={() => handleMove("r")}
-              />
+              <button className="sliderArrow rightArrow" onClick={() => handleMove("r")}>
+                <FontAwesomeIcon icon={faCircleArrowRight} />
+              </button>
             </div>
           )}
+
           <div className="hotelWrapper">
-            <button className="bookNow">Reserve or Book Now!</button>
-            <h1 className="hotelTitle">{data.name}</h1>
-            <div className="hotelAddress">
-              <FontAwesomeIcon icon={faLocationDot} />
-              <span>{data.address}</span>
+            <div className="hotelHeader">
+              <div className="hotelHeaderInfo">
+                <div className="hotelRatingTag">
+                  <FontAwesomeIcon icon={faStar} className="starGold" />
+                  <span>{data.rating || 4.9} Superb</span>
+                  <span className="hotelTypeBadge">{data.type || "Luxury Resort"}</span>
+                </div>
+                <h1 className="hotelTitle">{data.name}</h1>
+                <div className="hotelAddress">
+                  <FontAwesomeIcon icon={faLocationDot} className="addrIcon" />
+                  <span>{data.address}, {data.city}</span>
+                  <span className="hotelDistPill">{data.distance || "Central Location"}</span>
+                </div>
+              </div>
+
+              <div className="hotelHeaderCta">
+                <div className="hotelHeaderPrice">
+                  <span className="fromText">Starting from</span>
+                  <div className="priceBig">
+                    <span>${data.cheapestPrice}</span>
+                    <small>/ night</small>
+                  </div>
+                </div>
+                <button className="bookNowTop" onClick={handleClick}>
+                  Reserve Suites
+                </button>
+              </div>
             </div>
-            <span className="hotelDistance">
-              Excellent location – {data.distance}m from center
-            </span>
-            <span className="hotelPriceHighlight">
-              Book a stay over ${data.cheapestPrice} at this property and get a
-              free airport taxi
-            </span>
-            <div className="hotelImages">
+
+            <div className="hotelImagesGrid">
               {data.photos?.map((photo, i) => (
-                <div className="hotelImgWrapper" key={i}>
-                  <img
-                    onClick={() => handleOpen(i)}
-                    src={photo}
-                    alt=""
-                    className="hotelImg"
-                  />
+                <div
+                  className={`hotelImgWrapper ${i === 0 ? "imgHero" : ""}`}
+                  key={i}
+                  onClick={() => handleOpen(i)}
+                >
+                  <img src={photo} alt="" className="hotelImg" />
+                  <div className="imgOverlay">
+                    <span>Click to expand</span>
+                  </div>
                 </div>
               ))}
             </div>
-            <div className="hotelDetails">
-              <div className="hotelDetailsTexts">
-                <h1 className="hotelTitle">{data.title}</h1>
-                <p className="hotelDesc">{data.desc}</p>
-              </div>
-              <div className="hotelDetailsPrice">
-                <h1>Perfect for a {days}-night stay!</h1>
-                <span>
-                  Located in the real heart of Krakow, this property has an
-                  excellent location score of 9.8!
-                </span>
-                <h2>
-                  <b>${days * data.cheapestPrice * options.room}</b> ({days}{" "}
-                  nights)
-                </h2>
-                <button onClick={handleClick}>Reserve or Book Now!</button>
+
+            <div className="hotelAmenitiesSection">
+              <h3 className="amenitiesTitle">Property Highlights & Amenities</h3>
+              <div className="amenitiesGrid">
+                {amenities.map((item, idx) => (
+                  <div className="amenityItem" key={idx}>
+                    <FontAwesomeIcon icon={item.icon} className="amenityIcon" />
+                    <span>{item.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
+
+            <div className="hotelDetails">
+              <div className="hotelDetailsTexts">
+                <h2 className="hotelSubTitle">{data.title || "Experience Unrivaled Comfort"}</h2>
+                <p className="hotelDesc">{data.desc}</p>
+              </div>
+
+              <aside className="hotelDetailsPrice">
+                <div className="priceCardHeader">
+                  <h3>Curated {days}-Night Stay</h3>
+                  <span className="priceCardBadge">VIP Genius Rate</span>
+                </div>
+                <p className="priceCardDesc">
+                  Prime location in {data.city || "this iconic destination"} with 5-star verified guest hospitality score.
+                </p>
+
+                <div className="priceCalculation">
+                  <div className="calcRow">
+                    <span>${data.cheapestPrice} x {days} nights x {options?.room || 1} room</span>
+                    <span>${days * data.cheapestPrice * (options?.room || 1)}</span>
+                  </div>
+                  <div className="calcRow highlightRow">
+                    <span>Total Amount</span>
+                    <span className="totalPriceVal">
+                      ${days * data.cheapestPrice * (options?.room || 1)}
+                    </span>
+                  </div>
+                  <span className="calcTaxNote">Includes taxes, breakfast, and resort service</span>
+                </div>
+
+                <button className="bookNowBtn" onClick={handleClick}>
+                  Book Your Sanctuary Now
+                </button>
+              </aside>
+            </div>
           </div>
+
           <MailList />
           <Footer />
         </div>
-      )}
-      {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
+      ) : null}
+
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };

@@ -8,14 +8,28 @@ import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+import { MongoMemoryServer } from "mongodb-memory-server";
+import { seedDatabase } from "./seed.js";
+
 const app = express();
 dotenv.config();
 
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO);
-    console.log("Connected to mongoDB.");
+    const mongoUri = process.env.MONGO;
+    if (mongoUri && mongoUri !== "your_uri" && (mongoUri.startsWith("mongodb://") || mongoUri.startsWith("mongodb+srv://"))) {
+      await mongoose.connect(mongoUri);
+      console.log("Connected to MongoDB via process.env.MONGO.");
+    } else {
+      console.log("No external MongoDB URI specified in .env. Starting embedded MongoDB...");
+      const mongoServer = await MongoMemoryServer.create();
+      const uri = mongoServer.getUri();
+      await mongoose.connect(uri);
+      console.log("Connected to embedded MongoDB at:", uri);
+    }
+    await seedDatabase();
   } catch (error) {
+    console.error("MongoDB connection error:", error);
     throw error;
   }
 };

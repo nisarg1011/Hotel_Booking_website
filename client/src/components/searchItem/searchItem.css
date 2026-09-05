@@ -1,109 +1,277 @@
 .searchItem {
-  border: 1px solid lightgray;
-  padding: 10px;
-  border-radius: 5px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border-radius: 20px;
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 20px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.searchItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.siImgBox {
+  width: 240px;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .siImg {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.searchItem:hover .siImg {
+  transform: scale(1.06);
+}
+
+.siFeaturedBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(8, 26, 36, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .siDesc {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 2;
 }
 
+.siLocationRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.siLocIcon {
+  color: #0284c7;
+  font-size: 11px;
+}
+
 .siTitle {
-  font-size: 20px;
-  color: #0071c2;
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.3px;
 }
 
-.siDistance {
-  font-size: 12px;
+.siSubtitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0284c7;
 }
 
-.siTaxiOp {
-  font-size: 12px;
-  background-color: #008009;
-  color: white;
-  width: max-content;
-  padding: 3px;
-  border-radius: 5px;
+.siFeatures {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.siSubtitle{
-  font-size: 12px;
-  font-weight: bold;
+.siPerksList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }
 
-.siFeatures{
-  font-size: 12px;
+.siPerkBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
 }
 
-.siCancelOp{
-  font-size: 12px;
-  color: #008009;
-  font-weight: bold;
+.taxiBadge {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
 }
 
-.siCancelOpSubtitle{
-  font-size: 12px;
-  color: #008009;
+.cancelBadge {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
 }
 
 .siDetails {
-  flex: 1;
+  flex: 1.2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
+  border-left: 1px solid #f1f5f9;
+  padding-left: 20px;
 }
 
-.siRating{
+.siRatingBox {
   display: flex;
-  justify-content: space-between
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
 }
 
-.siRating>span{
-  font-weight: 500;
-}
-.siRating>button{
- background-color: #003580;
- color: white;
- padding: 5px;
- font-weight: bold;
- border: none;
-}
-
-.siDetailTexts{
-  text-align: right;
+.siRatingLabel {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: flex-end;
 }
 
-.siPrice{
-  font-size: 24px;
+.siRatingGrade {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
-.siTaxOp{
+.siReviewCount {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.siRatingScore {
+  background: linear-gradient(135deg, #081a24 0%, #0d2738 100%);
+  color: #fbbf24;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.starIcon {
+  font-size: 11px;
+}
+
+.siPricingAction {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.siPriceBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.siFrom {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.siPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.siCurrency {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.siAmount {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.siPerNight {
   font-size: 12px;
-  color: gray;
+  color: #64748b;
+  margin-left: 2px;
 }
 
-.siCheckButton{
-  background-color: #0071c2;
+.siTaxNote {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.siLinkBtn {
+  text-decoration: none;
+}
+
+.siCheckButton {
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   color: white;
-  font-weight: bold;
-  padding: 10px 5px;
   border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.siCheckButton:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.45);
+}
+
+@media (max-width: 800px) {
+  .searchItem {
+    flex-direction: column;
+  }
+  
+  .siImgBox {
+    width: 100%;
+    height: 200px;
+  }
+  
+  .siDetails {
+    border-left: none;
+    border-top: 1px solid #f1f5f9;
+    padding-left: 0;
+    padding-top: 16px;
+  }
+  
+  .siRatingBox {
+    justify-content: space-between;
+  }
 }
