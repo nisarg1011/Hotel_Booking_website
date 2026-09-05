@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/build",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/users/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/hotels/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/rooms/:path*",
+      "destination": "/api"
+    }
+  ]
+}
