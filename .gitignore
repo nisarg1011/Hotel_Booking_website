@@ -7,3 +7,5 @@ build
 dist
 .system_generated
 .vercel
+
+.wrangler
